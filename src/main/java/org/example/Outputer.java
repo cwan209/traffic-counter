@@ -21,4 +21,8 @@ public class Outputer {
     public void outputContiguousHalfHoursWithLeastCars(TimeRange contiguousHalfHoursWithLeastCars) {
 
     }
+
+    public void outputError(String errorMessage) {
+
+    }
 }

@@ -16,16 +16,20 @@ public class TrafficCounter {
     }
 
     public void run(String inputFilePath) {
-        List<TrafficLog> trafficLogs = trafficLogParser.parse(inputFilePath);
+        try {
+            List<TrafficLog> trafficLogs = trafficLogParser.parse(inputFilePath);
 
-        int numberOfCarsInTotal = trafficLogAnalyzer.countCarsInTotal(trafficLogs);
-        List<CarsByDate> carsByDates = trafficLogAnalyzer.countCarsByDate(trafficLogs);
-        List<TrafficLog> topThreeHalfHoursWithMostCars = trafficLogAnalyzer.countTopKHalfHoursWithMostCars(trafficLogs, 3);
-        TimeRange contiguousThreeHalfHoursWithLeastCars = trafficLogAnalyzer.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
+            int numberOfCarsInTotal = trafficLogAnalyzer.countCarsInTotal(trafficLogs);
+            List<CarsByDate> carsByDates = trafficLogAnalyzer.countCarsByDate(trafficLogs);
+            List<TrafficLog> topThreeHalfHoursWithMostCars = trafficLogAnalyzer.countTopKHalfHoursWithMostCars(trafficLogs, 3);
+            TimeRange contiguousThreeHalfHoursWithLeastCars = trafficLogAnalyzer.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
 
-        outputer.outputNumberOfCarsInTotal(numberOfCarsInTotal);
-        outputer.outputCarsByDates(carsByDates);
-        outputer.outputTopThreeHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
-        outputer.outputContiguousHalfHoursWithLeastCars(contiguousThreeHalfHoursWithLeastCars);
+            outputer.outputNumberOfCarsInTotal(numberOfCarsInTotal);
+            outputer.outputCarsByDates(carsByDates);
+            outputer.outputTopThreeHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
+            outputer.outputContiguousHalfHoursWithLeastCars(contiguousThreeHalfHoursWithLeastCars);
+        } catch (Exception e) {
+            outputer.outputError(e.getMessage());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package org.example.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class TrafficLog {
     private LocalDateTime timestamp;
@@ -25,5 +26,26 @@ public class TrafficLog {
 
     public void setNoOfCars(int noOfCars) {
         this.noOfCars = noOfCars;
+    }
+
+    @Override
+    public String toString() {
+        return "TrafficLog{" +
+                "timestamp=" + timestamp +
+                ", noOfCars=" + noOfCars +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TrafficLog that = (TrafficLog) o;
+        return noOfCars == that.noOfCars && Objects.equals(timestamp, that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, noOfCars);
     }
 }

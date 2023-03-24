@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ class TrafficCounterTest {
     }
 
     @Test
-    void should_parse_input_file_and_analyze_logs_and_output_result() {
+    void should_parse_input_file_and_analyze_logs_and_output_result() throws FileNotFoundException {
         // given
         LocalDateTime now = LocalDateTime.now();
         int numberOfCarsInTotal = 5;
@@ -80,5 +81,18 @@ class TrafficCounterTest {
         Mockito.verify(outputer).outputCarsByDates(carsByDates);
         Mockito.verify(outputer).outputTopThreeHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
         Mockito.verify(outputer).outputContiguousHalfHoursWithLeastCars(contiguousHalfHoursWithLeastCars);
+    }
+
+    @Test
+    void should_call_outputer_to_print_error_when_exception_thrown() throws FileNotFoundException {
+        // given
+        String errorMessage = "file not found";
+        Mockito.when(trafficLogParser.parse(INPUT_FILE_PATH)).thenThrow(new FileNotFoundException("file not found"));
+
+        // when
+        subject.run(INPUT_FILE_PATH);
+
+        // then
+        Mockito.verify(outputer).outputError(errorMessage);
     }
 }
