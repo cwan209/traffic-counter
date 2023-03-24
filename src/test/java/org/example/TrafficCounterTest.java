@@ -45,7 +45,7 @@ class TrafficCounterTest {
         trafficLogs.add(new TrafficLog(now, 1));
 
         List<CarsByDate> carsByDates = new ArrayList<>();
-        carsByDates.add(new CarsByDate(2, LocalDate.now()));
+        carsByDates.add(new CarsByDate(LocalDate.now(), 2));
 
         List<TrafficLog> topThreeHalfHoursWithMostCars = new ArrayList<>();
         topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(90)), 3));
