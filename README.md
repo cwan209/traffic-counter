@@ -1,5 +1,5 @@
 # Description
-This a traffic log counter that takes a traffic log file of timestamp and number of cars and output the statistics of the traffic.
+This is a traffic log counter that takes a traffic log file of timestamp and number of cars and output the statistics of the traffic.
 
 ## How to run
 clone the repo and run `./gradlew run --args='<INPUT_FILE_PATH>'` with input file path in args on root directory. it can be either a relative path to the root directory
