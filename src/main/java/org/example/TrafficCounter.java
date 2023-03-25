@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.CarsByDate;
 import org.example.model.TrafficLog;
 
 import java.util.List;
@@ -22,13 +23,15 @@ public class TrafficCounter {
             List<TrafficLog> trafficLogs = trafficLogParser.parse(inputFilePath);
 
             int numberOfCarsInTotal = trafficLogAnalyzer.countCarsInTotal(trafficLogs);
-            List<CarsByDate> carsByDates = trafficLogAnalyzer.countCarsByDate(trafficLogs);
-            List<TrafficLog> topThreeHalfHoursWithMostCars = trafficLogAnalyzer.countTopKHalfHoursWithMostCars(trafficLogs, 3);
-            List<TrafficLog> contiguousThreeHalfHoursWithLeastCars = trafficLogAnalyzer.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
-
             outputer.outputNumberOfCarsInTotal(numberOfCarsInTotal);
+
+            List<CarsByDate> carsByDates = trafficLogAnalyzer.countCarsByDate(trafficLogs);
             outputer.outputCarsByDates(carsByDates);
+
+            List<TrafficLog> topThreeHalfHoursWithMostCars = trafficLogAnalyzer.countTopKHalfHoursWithMostCars(trafficLogs, 3);
             outputer.outputTopHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
+
+            List<TrafficLog> contiguousThreeHalfHoursWithLeastCars = trafficLogAnalyzer.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
             outputer.outputContiguousHalfHoursWithLeastCars(contiguousThreeHalfHoursWithLeastCars);
         } catch (Exception e) {
             outputer.outputError(e.getMessage());

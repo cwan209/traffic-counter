@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.CarsByDate;
 import org.example.model.TrafficLog;
 
 import java.util.List;

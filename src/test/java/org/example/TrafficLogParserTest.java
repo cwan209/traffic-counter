@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.exception.NoTrafficLogException;
 import org.example.model.TrafficLog;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
