@@ -76,6 +76,32 @@ class OutputerTest {
 
     @Test
     void outputContiguousHalfHoursWithLeastCars() {
+        // given
+        List<TrafficLog> trafficLogs = new ArrayList<>();
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 12));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 0, 0), 14));
+
+        // when
+        subject.outputContiguousHalfHoursWithLeastCars(trafficLogs);
+
+        // then
+        Mockito.verify(printer).print("Here's the 3 contiguous half hours with the least cars:");
+        Mockito.verify(printer).print("2021-12-01T05:00:00 5");
+        Mockito.verify(printer).print("2021-12-01T05:30:00 12");
+        Mockito.verify(printer).print("2021-12-01T06:00:00 14");
+    }
+
+    @Test
+    void outputContiguousHalfHoursWithLeastCars_should_output_error_message_if_there_is_no_valid_contiguous_half_hours() {
+        // given
+        List<TrafficLog> trafficLogs = new ArrayList<>();
+
+        // when
+        subject.outputContiguousHalfHoursWithLeastCars(trafficLogs);
+
+        // then
+        Mockito.verify(printer).print("Contiguous half hours with the least cars can not be found");
     }
 
     @Test

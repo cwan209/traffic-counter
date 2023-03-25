@@ -25,7 +25,10 @@ public class Outputer {
     }
 
     public void outputContiguousHalfHoursWithLeastCars(List<TrafficLog> contiguousHalfHoursWithLeastCars) {
+        if (contiguousHalfHoursWithLeastCars.isEmpty()) printer.print("Contiguous half hours with the least cars can not be found");
 
+        printer.print("Here's the " + contiguousHalfHoursWithLeastCars.size() + " contiguous half hours with the least cars:");
+        contiguousHalfHoursWithLeastCars.forEach( trafficLog ->  printer.print(trafficLog.toString()));
     }
 
     public void outputError(String errorMessage) {
