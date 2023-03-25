@@ -20,6 +20,7 @@ public class TrafficLogParser {
                 trafficLogs.add(parseTrafficLog(line));
             }
         }
+        if (trafficLogs.isEmpty()) throw new NoTrafficLogException("there is no traffic log in the input file");
         return trafficLogs;
     }
 

@@ -40,4 +40,12 @@ class TrafficLogParserTest {
                 () -> trafficLogParser.parse("not_exist_file")
         );
     }
+    @Test
+    void should_throw_error_when_the_file_is_empty() {
+        // then
+        Assertions.assertThrows(NoTrafficLogException.class,
+                // when
+                () -> trafficLogParser.parse("test_empty_file")
+        );
+    }
 }
