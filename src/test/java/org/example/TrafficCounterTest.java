@@ -69,7 +69,7 @@ class TrafficCounterTest {
 
         Mockito.doNothing().when(outputer).outputNumberOfCarsInTotal(numberOfCarsInTotal);
         Mockito.doNothing().when(outputer).outputCarsByDates(carsByDates);
-        Mockito.doNothing().when(outputer).outputTopThreeHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
+        Mockito.doNothing().when(outputer).outputTopHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
         Mockito.doNothing().when(outputer).outputContiguousHalfHoursWithLeastCars(contiguousHalfHoursWithLeastCars);
 
         // when
@@ -85,7 +85,7 @@ class TrafficCounterTest {
 
         Mockito.verify(outputer).outputNumberOfCarsInTotal(numberOfCarsInTotal);
         Mockito.verify(outputer).outputCarsByDates(carsByDates);
-        Mockito.verify(outputer).outputTopThreeHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
+        Mockito.verify(outputer).outputTopHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
         Mockito.verify(outputer).outputContiguousHalfHoursWithLeastCars(contiguousHalfHoursWithLeastCars);
     }
 

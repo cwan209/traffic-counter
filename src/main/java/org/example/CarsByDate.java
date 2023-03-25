@@ -4,36 +4,20 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class CarsByDate {
-    private int noOfCars;
-    private LocalDate date;
+    private final int noOfCars;
+    private final LocalDate date;
 
     public CarsByDate(LocalDate date, int noOfCars) {
         this.noOfCars = noOfCars;
         this.date = date;
     }
 
-    public int getNoOfCars() {
-        return noOfCars;
-    }
-
-    public void setNoOfCars(int noOfCars) {
-        this.noOfCars = noOfCars;
-    }
-
     public LocalDate getDate() {
         return date;
     }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     @Override
     public String toString() {
-        return "CarsByDate{" +
-                "noOfCars=" + noOfCars +
-                ", date=" + date +
-                '}';
+        return  date + " " + noOfCars;
     }
 
     @Override

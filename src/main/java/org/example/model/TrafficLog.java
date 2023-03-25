@@ -1,11 +1,12 @@
 package org.example.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class TrafficLog {
-    private LocalDateTime timestamp;
-    private int noOfCars;
+    private final LocalDateTime timestamp;
+    private final int noOfCars;
 
     public TrafficLog(LocalDateTime timestamp, int noOfCars) {
         this.timestamp = timestamp;
@@ -16,24 +17,13 @@ public class TrafficLog {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public int getNoOfCars() {
         return noOfCars;
     }
 
-    public void setNoOfCars(int noOfCars) {
-        this.noOfCars = noOfCars;
-    }
-
     @Override
     public String toString() {
-        return "TrafficLog{" +
-                "timestamp=" + timestamp +
-                ", noOfCars=" + noOfCars +
-                '}';
+        return timestamp.format(DateTimeFormatter.ISO_DATE_TIME) + " " + noOfCars;
     }
 
     @Override

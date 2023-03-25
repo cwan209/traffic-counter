@@ -28,7 +28,7 @@ public class TrafficCounter {
 
             outputer.outputNumberOfCarsInTotal(numberOfCarsInTotal);
             outputer.outputCarsByDates(carsByDates);
-            outputer.outputTopThreeHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
+            outputer.outputTopHalfHoursWithMostCars(topThreeHalfHoursWithMostCars);
             outputer.outputContiguousHalfHoursWithLeastCars(contiguousThreeHalfHoursWithLeastCars);
         } catch (Exception e) {
             outputer.outputError(e.getMessage());
