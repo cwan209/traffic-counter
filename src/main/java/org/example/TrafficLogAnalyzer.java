@@ -3,10 +3,9 @@ package org.example;
 import org.example.model.TimeRange;
 import org.example.model.TrafficLog;
 
-import java.time.LocalDate;
+import java.security.InvalidParameterException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TrafficLogAnalyzer {
@@ -29,7 +28,11 @@ public class TrafficLogAnalyzer {
     }
 
     public List<TrafficLog> countTopKHalfHoursWithMostCars(List<TrafficLog> trafficLogs, int k) {
-        return null;
+        if (k < 1) throw new InvalidParameterException("k can not be less than 1");
+        return trafficLogs.stream()
+                .sorted(Comparator.comparing(TrafficLog::getNoOfCars).reversed())
+                .limit(k)
+                .collect(Collectors.toList());
     }
 
     public TimeRange countContiguousKHalfHoursWithLeastCars(List<TrafficLog> trafficLogs, int k) {

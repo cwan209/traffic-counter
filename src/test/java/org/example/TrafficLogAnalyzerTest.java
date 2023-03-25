@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -80,11 +81,39 @@ class TrafficLogAnalyzerTest {
         expected.add(new CarsByDate(LocalDate.of(2021, 12, 1), 31));
         expected.add(new CarsByDate(LocalDate.of(2021, 12, 2), 35));
         Assertions.assertEquals(expected, actual);
-
     }
 
     @Test
     void countTopKHalfHoursWithMostCars() {
+        // given
+        trafficLogs = new ArrayList<>();
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 12));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 0, 0), 14));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 30, 0), 15));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 0, 0), 25));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 30, 0), 46));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 0, 0), 42));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 9, 30, 0), 18));
+
+        // when
+        List<TrafficLog> actual = subject.countTopKHalfHoursWithMostCars(trafficLogs, 3);
+
+        // then
+        List<TrafficLog> expected = new ArrayList<>();
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 30, 0), 46));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 0, 0), 42));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 0, 0), 25));
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+
+    void countTopKHalfHoursWithMostCars_should_throw_error_if_K_is_less_than_1() {
+        // then
+        Assertions.assertThrows(InvalidParameterException.class,
+                // when
+                () -> subject.countTopKHalfHoursWithMostCars(trafficLogs, 0)
+        );
     }
 
     @Test
