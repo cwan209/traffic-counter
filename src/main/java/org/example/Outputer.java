@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.model.TimeRange;
 import org.example.model.TrafficLog;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class Outputer {
 
     }
 
-    public void outputContiguousHalfHoursWithLeastCars(TimeRange contiguousHalfHoursWithLeastCars) {
+    public void outputContiguousHalfHoursWithLeastCars(List<TrafficLog> contiguousHalfHoursWithLeastCars) {
 
     }
 

@@ -22,7 +22,7 @@ public class TrafficCounter {
             int numberOfCarsInTotal = trafficLogAnalyzer.countCarsInTotal(trafficLogs);
             List<CarsByDate> carsByDates = trafficLogAnalyzer.countCarsByDate(trafficLogs);
             List<TrafficLog> topThreeHalfHoursWithMostCars = trafficLogAnalyzer.countTopKHalfHoursWithMostCars(trafficLogs, 3);
-            TimeRange contiguousThreeHalfHoursWithLeastCars = trafficLogAnalyzer.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
+            List<TrafficLog> contiguousThreeHalfHoursWithLeastCars = trafficLogAnalyzer.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
 
             outputer.outputNumberOfCarsInTotal(numberOfCarsInTotal);
             outputer.outputCarsByDates(carsByDates);

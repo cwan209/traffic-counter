@@ -52,7 +52,10 @@ class TrafficCounterTest {
         topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(30)), 5));
         topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(60)), 4));
 
-        TimeRange contiguousHalfHoursWithLeastCars = new TimeRange(now, now.plus(Duration.ofMinutes(90)));
+        List<TrafficLog> contiguousHalfHoursWithLeastCars = new ArrayList<>();
+        topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(90)), 1));
+        topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(120)), 2));
+        topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(150)), 3));
 
         Mockito.when(trafficLogParser.parse(INPUT_FILE_PATH)).thenReturn(trafficLogs);
 

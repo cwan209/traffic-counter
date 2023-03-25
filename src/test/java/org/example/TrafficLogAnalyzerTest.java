@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.TimeRange;
 import org.example.model.TrafficLog;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,31 +21,6 @@ class TrafficLogAnalyzerTest {
     @BeforeEach
     public void setup() {
         subject = new TrafficLogAnalyzer();
-        trafficLogs = new ArrayList<>();
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 12));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 0, 0), 14));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 30, 0), 15));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 0, 0), 25));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 30, 0), 46));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 0, 0), 42));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 15, 0, 0), 9));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 15, 30, 0), 11));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 23, 30, 0), 0));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 9, 30, 0), 18));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 10, 30, 0), 15));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 11, 30, 0), 7));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 12, 30, 0), 6));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 13, 30, 0), 9));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 14, 30, 0), 11));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 5, 15, 30, 0), 15));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 8, 18, 0, 0), 33));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 8, 19, 0, 0), 28));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 8, 20, 0, 0), 25));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 8, 21, 0, 0), 21));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 8, 22, 0, 0), 16));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 8, 23, 0, 0), 11));
-        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 9, 0, 0, 0), 4));
     }
 
     @Test
@@ -117,6 +93,110 @@ class TrafficLogAnalyzerTest {
     }
 
     @Test
-    void countContiguousKHalfHoursWithLeastCars() {
+    void countContiguousKHalfHoursWithLeastCars_should_find_time_range_correctly_with_no_missing_records_in_between() {
+        // given
+        trafficLogs = new ArrayList<>();
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 12));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 0, 0), 14));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 30, 0), 15));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 0, 0), 25));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 7, 30, 0), 8));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 0, 0), 9));
+
+        // when
+        List<TrafficLog> actual = subject.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
+
+        // then
+        List<TrafficLog> expected = new ArrayList<>();
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 12));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 0, 0), 14));
+
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    void countContiguousKHalfHoursWithLeastCars_should_discard_range_containing_missing_log() {
+        // given
+        trafficLogs = new ArrayList<>();
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 15));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 6, 0, 0), 2));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 30, 0), 0));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 10, 0, 0), 9));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 10, 30, 0), 19));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 23, 30, 0), 0));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 0, 0), 1));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 30, 0), 2));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 1, 0, 0), 9));
+
+        // when
+        List<TrafficLog> actual = subject.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
+
+        // then
+        List<TrafficLog> expected = new ArrayList<>();
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 23, 30, 0), 0));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 0, 0), 1));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 30, 0), 2));
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void countContiguousKHalfHoursWithLeastCars_should_return_an_empty_list_if_no_valid_range_can_be_found() {
+        // given
+        trafficLogs = new ArrayList<>();
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 15));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 30, 0), 0));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 10, 0, 0), 9));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 10, 30, 0), 19));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 23, 30, 0), 0));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 0, 0), 1));
+        // when
+        List<TrafficLog> actual = subject.countContiguousKHalfHoursWithLeastCars(trafficLogs, 3);
+
+        // then
+        List<TrafficLog> expected = new ArrayList<>();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void countContiguousKHalfHoursWithLeastCars_should_return_correct_range_with_dynamic_k_value() {
+        // given
+        trafficLogs = new ArrayList<>();
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 0, 0), 5));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 5, 30, 0), 15));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 8, 30, 0), 0));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 10, 0, 0), 9));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 10, 30, 0), 19));
+
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 23, 30, 0), 0));
+        trafficLogs.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 0, 0), 1));
+        // when
+        List<TrafficLog> actual = subject.countContiguousKHalfHoursWithLeastCars(trafficLogs, 2);
+
+        // then
+        List<TrafficLog> expected = new ArrayList<>();
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 1, 23, 30, 0), 0));
+        expected.add(new TrafficLog(LocalDateTime.of(2021, 12, 2, 0, 0, 0), 1));
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void countContiguousKHalfHoursWithLeastCars_should_throw_error_if_K_is_less_than_1() {
+        // then
+        Assertions.assertThrows(InvalidParameterException.class,
+                // when
+                () -> subject.countContiguousKHalfHoursWithLeastCars(trafficLogs, 0)
+        );
     }
 }
