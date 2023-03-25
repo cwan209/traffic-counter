@@ -7,15 +7,18 @@ import java.util.List;
 public class TrafficCounter {
     private final TrafficLogParser trafficLogParser;
     private final TrafficLogAnalyzer trafficLogAnalyzer;
+    private final ArgsParser argsParser;
     private final Outputer outputer;
-    public TrafficCounter(TrafficLogParser trafficLogParser, TrafficLogAnalyzer trafficLogAnalyzer, Outputer outputer) {
+    public TrafficCounter(TrafficLogParser trafficLogParser, TrafficLogAnalyzer trafficLogAnalyzer, Outputer outputer, ArgsParser argsParser) {
         this.trafficLogParser = trafficLogParser;
         this.trafficLogAnalyzer = trafficLogAnalyzer;
         this.outputer = outputer;
+        this.argsParser = argsParser;
     }
 
-    public void run(String inputFilePath) {
+    public void run(String[] args) {
         try {
+            String inputFilePath = argsParser.parseInputFilePath(args);
             List<TrafficLog> trafficLogs = trafficLogParser.parse(inputFilePath);
 
             int numberOfCarsInTotal = trafficLogAnalyzer.countCarsInTotal(trafficLogs);

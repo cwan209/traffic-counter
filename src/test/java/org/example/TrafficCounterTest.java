@@ -26,18 +26,21 @@ class TrafficCounterTest {
     private TrafficLogAnalyzer trafficLogAnalyzer;
     @Mock
     private Outputer outputer;
+    @Mock
+    private ArgsParser argsParser;
 
     private static final String INPUT_FILE_PATH = "input_file";
 
     @BeforeEach
     public void setup() {
-        subject = new TrafficCounter(trafficLogParser, trafficLogAnalyzer, outputer);
+        subject = new TrafficCounter(trafficLogParser, trafficLogAnalyzer, outputer, argsParser);
     }
 
     @Test
     void should_parse_input_file_and_analyze_logs_and_output_result() throws FileNotFoundException {
         // given
         LocalDateTime now = LocalDateTime.now();
+        String[] args = new String[]{};
         int numberOfCarsInTotal = 5;
 
         List<TrafficLog> trafficLogs = new ArrayList<>();
@@ -56,6 +59,7 @@ class TrafficCounterTest {
         topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(120)), 2));
         topThreeHalfHoursWithMostCars.add(new TrafficLog(now.plus(Duration.ofMinutes(150)), 3));
 
+        Mockito.when(argsParser.parseInputFilePath(args)).thenReturn(INPUT_FILE_PATH);
         Mockito.when(trafficLogParser.parse(INPUT_FILE_PATH)).thenReturn(trafficLogs);
 
         Mockito.when(trafficLogAnalyzer.countCarsInTotal(trafficLogs)).thenReturn(numberOfCarsInTotal);
@@ -69,7 +73,7 @@ class TrafficCounterTest {
         Mockito.doNothing().when(outputer).outputContiguousHalfHoursWithLeastCars(contiguousHalfHoursWithLeastCars);
 
         // when
-        subject.run(INPUT_FILE_PATH);
+        subject.run(args);
 
         // then
         Mockito.verify(trafficLogParser).parse(INPUT_FILE_PATH);
@@ -88,11 +92,13 @@ class TrafficCounterTest {
     @Test
     void should_call_outputer_to_print_error_when_exception_thrown() throws FileNotFoundException {
         // given
+        String[] args = new String[]{};
         String errorMessage = "file not found";
+        Mockito.when(argsParser.parseInputFilePath(args)).thenReturn(INPUT_FILE_PATH);
         Mockito.when(trafficLogParser.parse(INPUT_FILE_PATH)).thenThrow(new FileNotFoundException("file not found"));
 
         // when
-        subject.run(INPUT_FILE_PATH);
+        subject.run(args);
 
         // then
         Mockito.verify(outputer).outputError(errorMessage);
